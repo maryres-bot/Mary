@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("createUserBtn");
+    if (!btn) return;
+
     btn.addEventListener("click", async () => {
         const username = document.getElementById("newUsername").value.trim();
         const password = document.getElementById("newPassword").value.trim();
         const fullName = document.getElementById("fullName").value.trim();
         const role = document.getElementById("role").value;
 
-        if (!username || !password || !fullName) {
+        if (!username || !password || !fullName || !role) {
             alert("All fields are required");
             return;
         }
