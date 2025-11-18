@@ -1,4 +1,4 @@
-const API_BASE = "PASTE_YOUR_WEB_APP_URL_HERE";
+const API_BASE = "https://script.google.com/macros/s/AKfycbyNfryd61KHxQr_E3aOQAhiLn1OQiG7Tup9x9ojij44TtH3hTqFrSGVTAxwCWiK_mV8qw/exec";
 
 async function apiPost(endpoint, data = {}) {
     const response = await fetch(`${API_BASE}?endpoint=${endpoint}`, {
