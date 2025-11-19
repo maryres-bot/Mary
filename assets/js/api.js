@@ -1,4 +1,5 @@
-const API_BASE = "https://script.google.com/macros/s/AKfycbwPDm0-pMqPOUfyP6OknUuhodt5xpYCdzfImIh-z5BQ3t24Wg02u9T_lY0zyV1uT6-u/exec";
+// Keep API_BASE here only
+const API_BASE = "YOUR_APPS_SCRIPT_WEB_APP_URL";
 
 async function apiPost(endpoint, data = {}) {
     const response = await fetch(`${API_BASE}?endpoint=${endpoint}`, {
@@ -7,15 +8,5 @@ async function apiPost(endpoint, data = {}) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     });
-
-    return response.json();
-}
-
-async function apiGet(endpoint) {
-    const response = await fetch(`${API_BASE}?endpoint=${endpoint}`, {
-        method: "GET",
-        mode: "cors"
-    });
-
     return response.json();
 }
