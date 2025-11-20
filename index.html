@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Royal Vending — Login</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="api-firebase.js"></script>
+</head>
+<body>
+  <div class="auth-card">
+    <h2>Royal Vending Portal</h2>
+    <input id="username" placeholder="Email" type="email">
+    <input id="password" placeholder="Password" type="password">
+    <button id="loginBtn">Sign In</button>
+    <button id="goSignup">Create Account</button>
+    <p id="authMessage" class="muted"></p>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const goSignup = document.getElementById('goSignup');
+    const authMessage = document.getElementById('authMessage');
+
+    loginBtn.addEventListener('click', async () => {
+      const email = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      authMessage.textContent = 'Signing in…';
+      try {
+        const user = await loginUser(email, password);
+        sessionStorage.setItem('rvc_user', JSON.stringify(user));
+        window.location.href = 'dashboard.html';
+      } catch(err) {
+        authMessage.textContent = err.message || 'Login failed';
+      }
+    });
+
+    goSignup.addEventListener('click', () => {
+      window.location.href = 'signup.html';
+    });
+  </script>
+</body>
+</html>

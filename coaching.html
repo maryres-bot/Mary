@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Coaching Logs — Royal Vending</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="api-firebase.js"></script>
+</head>
+<body>
+  <header>
+    <img src="assets/images/logo.png" class="logo">
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="evaluations.html">Evaluations</a>
+      <a href="coaching.html">Coaching Logs</a>
+      <a href="reports.html">Reports</a>
+      <a href="admin.html">Admin</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Coaching Logs</h1>
+    <button id="addCoachBtn">+ Add Coaching Log</button>
+    <table id="coachTable" border="1">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Coach</th>
+          <th>Date</th>
+          <th>Topics</th>
+          <th>Actions</th>
+          <th>Follow-up</th>
+          <th>Acknowledgement</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+      await logoutUser();
+      window.location.href = 'index.html';
+    });
+
+    async function loadCoaching() {
+      const list = await listCoaching();
+      const tbody = document.querySelector('#coachTable tbody');
+      tbody.innerHTML = '';
+      list.forEach(c=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${c.member}</td><td>${c.coach}</td><td>${c.date}</td><td>${c.topics}</td><td>${c.actions}</td><td>${c.followup}</td><td>${c.ackText || ''}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    loadCoaching();
+  </script>
+</body>
+</html>

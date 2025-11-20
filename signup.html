@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Royal Vending — Signup</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="api-firebase.js"></script>
+</head>
+<body>
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <input id="su_name" placeholder="Full Name">
+    <input id="su_email" placeholder="Email" type="email">
+    <input id="su_password" placeholder="Password" type="password">
+    <select id="su_role">
+      <option value="agent">Agent</option>
+      <option value="evaluator">Evaluator</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button id="signupBtn">Create Account</button>
+    <button id="goLogin">Back to Login</button>
+    <p id="signupMessage" class="muted"></p>
+  </div>
+
+  <script>
+    const signupBtn = document.getElementById('signupBtn');
+    const goLogin = document.getElementById('goLogin');
+    const signupMessage = document.getElementById('signupMessage');
+
+    signupBtn.addEventListener('click', async () => {
+      const name = document.getElementById('su_name').value;
+      const email = document.getElementById('su_email').value;
+      const password = document.getElementById('su_password').value;
+      const role = document.getElementById('su_role').value;
+      signupMessage.textContent = 'Creating account…';
+      try {
+        await signupCreateUser(email, password, name, role);
+        signupMessage.textContent = 'Account created! Redirecting…';
+        setTimeout(()=> window.location.href='index.html', 1000);
+      } catch(err) {
+        signupMessage.textContent = err.message || 'Signup failed';
+      }
+    });
+
+    goLogin.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

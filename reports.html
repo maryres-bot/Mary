@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Reports — Royal Vending</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="api-firebase.js"></script>
+</head>
+<body>
+  <header>
+    <img src="assets/images/logo.png" class="logo">
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="evaluations.html">Evaluations</a>
+      <a href="coaching.html">Coaching Logs</a>
+      <a href="reports.html">Reports</a>
+      <a href="admin.html">Admin</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Reports</h1>
+    <p>Export and visualize data (placeholders for charts)</p>
+    <button onclick="alert('Export Excel')">⬇️ Download Excel</button>
+    <button onclick="alert('Export PDF')">⬇️ Download PDF</button>
+  </main>
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+      await logoutUser();
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
