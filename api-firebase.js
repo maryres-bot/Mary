@@ -1,9 +1,12 @@
 const firebaseConfig = {
-  apiKey: "YAIzaSyC4Uv0ngzbDDClXZ3SzZzkbL6xPoS3rQ4g",
+  apiKey: "AIzaSyC4Uv0ngzbDDClXZ3SzZzkbL6xPoS3rQ4g",
   authDomain: "rv-coaching-system.firebaseapp.com",
   projectId: "rv-coaching-system",
+  storageBucket: "rv-coaching-system.firebasestorage.app",
+  messagingSenderId: "65883754066",
+  appId: "1:65883754066:web:1ca8e6059581fb2c19198b"
+  measurementId: "G-ZE6FV5E0Y2"
 };
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
