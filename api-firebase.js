@@ -1,18 +1,25 @@
+// -------------------------
+// FIREBASE CONFIG
+// -------------------------
 const firebaseConfig = {
   apiKey: "AIzaSyC4Uv0ngzbDDClXZ3SzZzkbL6xPoS3rQ4g",
   authDomain: "rv-coaching-system.firebaseapp.com",
   projectId: "rv-coaching-system",
   storageBucket: "rv-coaching-system.firebasestorage.app",
   messagingSenderId: "65883754066",
-  appId: "1:65883754066:web:1ca8e6059581fb2c19198b"
+  appId: "1:65883754066:web:1ca8e6059581fb2c19198b",
   measurementId: "G-ZE6FV5E0Y2"
 };
+
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// -------------------------
 // AUTH HELPERS
-async function signupCreateUser(email, password, name, role='agent') {
+// -------------------------
+async function signupCreateUser(email, password, name, role = 'agent') {
   const cred = await auth.createUserWithEmailAndPassword(email, password);
   const uid = cred.user.uid;
   await db.collection('users').doc(uid).set({
@@ -33,9 +40,14 @@ async function logoutUser() {
   await auth.signOut();
 }
 
+// -------------------------
 // EVALUATIONS
+// -------------------------
 async function addEvaluation(payload) {
-  const ref = await db.collection('evaluations').add({...payload, createdAt: new Date()});
+  const ref = await db.collection('evaluations').add({
+    ...payload,
+    createdAt: new Date()
+  });
   return ref.id;
 }
 
@@ -44,9 +56,14 @@ async function listEvaluations() {
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
+// -------------------------
 // COACHING
+// -------------------------
 async function addCoaching(payload) {
-  const ref = await db.collection('coaching').add({...payload, createdAt: new Date()});
+  const ref = await db.collection('coaching').add({
+    ...payload,
+    createdAt: new Date()
+  });
   return ref.id;
 }
 
@@ -57,18 +74,22 @@ async function listCoaching() {
 
 async function acknowledgeCoaching(id, ackText) {
   await db.collection('coaching').doc(id).update({
-    ackText, ackDate: new Date()
+    ackText,
+    ackDate: new Date()
   });
 }
 
+// -------------------------
 // ADMIN
+// -------------------------
 async function adminListAll() {
   const usersSnap = await db.collection('users').get();
   const membersSnap = await db.collection('members').get();
   const critSnap = await db.collection('criteria').get();
+
   return {
-    users: usersSnap.docs.map(d=>({id:d.id,...d.data()})),
-    members: membersSnap.docs.map(d=>({id:d.id,...d.data()})),
-    criteria: critSnap.docs.map(d=>({id:d.id,...d.data()}))
+    users: usersSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+    members: membersSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+    criteria: critSnap.docs.map(d => ({ id: d.id, ...d.data() }))
   };
 }
