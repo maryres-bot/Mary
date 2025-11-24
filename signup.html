@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up</title>
 
-  <!-- Firebase CDN (must be BEFORE api-firebase.js) -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <!-- Firebase COMPAT SDK (must match index.html) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -30,6 +30,7 @@
     <select id="role">
       <option value="agent">Agent</option>
       <option value="admin">Admin</option>
+      <option value="evaluator">Evaluator</option>
     </select>
 
     <button id="signupBtn">Create Account</button>
@@ -37,7 +38,7 @@
     <p><a href="index.html">Back to Login</a></p>
   </div>
 
-  <!-- Your Firebase functions -->
+  <!-- Must be AFTER Firebase libraries -->
   <script src="api-firebase.js"></script>
 
   <script>
