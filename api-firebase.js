@@ -1,7 +1,24 @@
-// Import the functions you need from the SDKs you use
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"; // Specific Auth functions
-import { getFirestore, collection, addDoc, doc, setDoc, getDoc, updateDoc, getDocs, query } from "firebase/firestore"; // Specific Firestore functions
+// api-firebase.js (Firebase v9+ modular using CDN imports)
+
+// Import the functions you need from the SDKs you use (from CDN)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  getDocs,
+  query
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Your Firebase project configuration
 const firebaseConfig = {
@@ -22,86 +39,97 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // -------------------------
-// AUTH HELPERS (UPDATED TO MODULAR)
+// AUTH HELPERS
 // -------------------------
-async function signupCreateUser(email, password, name, role = 'agent') {
-  const cred = await createUserWithEmailAndPassword(auth, email, password); // Use modular function
+export async function signupCreateUser(email, password, name, role = "agent") {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
   const uid = cred.user.uid;
-  await setDoc(doc(db, 'users', uid), { // Use modular setDoc and doc
-    email, name, role, createdAt: new Date()
+
+  // Save extra info to Firestore
+  await setDoc(doc(db, "users", uid), {
+    email,
+    name,
+    role,
+    createdAt: new Date()
   });
+
   return { uid, email, name, role };
 }
 
-async function loginUser(email, password) {
-  const cred = await signInWithEmailAndPassword(auth, email, password); // Use modular function
+export async function loginUser(email, password) {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
   const uid = cred.user.uid;
-  const userSnap = await getDoc(doc(db, 'users', uid)); // Use modular getDoc and doc
-  if (!userSnap.exists()) throw new Error('Profile not found');
+
+  const userSnap = await getDoc(doc(db, "users", uid));
+  if (!userSnap.exists()) throw new Error("Profile not found");
+
   return { uid, ...userSnap.data() };
 }
 
-async function logoutUser() {
-  await signOut(auth); // Use modular function
+export async function logoutUser() {
+  await signOut(auth);
 }
 
 // -------------------------
-// EVALUATIONS (UPDATED TO MODULAR)
+// EVALUATIONS
 // -------------------------
-async function addEvaluation(payload) {
-  const collectionRef = collection(db, 'evaluations'); // Get collection reference
-  const docRef = await addDoc(collectionRef, { // Use modular addDoc
+export async function addEvaluation(payload) {
+  const collectionRef = collection(db, "evaluations");
+  const docRef = await addDoc(collectionRef, {
     ...payload,
     createdAt: new Date()
   });
   return docRef.id;
 }
 
-async function listEvaluations() {
-  const collectionRef = collection(db, 'evaluations'); // Get collection reference
-  const q = query(collectionRef); // For queries if needed, though getDocs works directly
-  const snap = await getDocs(q); // Use modular getDocs
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-}
-
-// -------------------------
-// COACHING (UPDATED TO MODULAR)
-// -------------------------
-async function addCoaching(payload) {
-  const collectionRef = collection(db, 'coaching'); // Get collection reference
-  const docRef = await addDoc(collectionRef, { // Use modular addDoc
-    ...payload,
-    createdAt: new Date()
-  });
-  return docRef.id;
-}
-
-async function listCoaching() {
-  const collectionRef = collection(db, 'coaching'); // Get collection reference
+export async function listEvaluations() {
+  const collectionRef = collection(db, "evaluations");
   const q = query(collectionRef);
-  const snap = await getDocs(q); // Use modular getDocs
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
-async function acknowledgeCoaching(id, ackText) {
-  const docRef = doc(db, 'coaching', id); // Get specific document reference
-  await updateDoc(docRef, { // Use modular updateDoc
+// -------------------------
+// COACHING
+// -------------------------
+export async function addCoaching(payload) {
+  const collectionRef = collection(db, "coaching");
+  const docRef = await addDoc(collectionRef, {
+    ...payload,
+    createdAt: new Date()
+  });
+  return docRef.id;
+}
+
+export async function listCoaching() {
+  const collectionRef = collection(db, "coaching");
+  const q = query(collectionRef);
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+export async function acknowledgeCoaching(id, ackText) {
+  const docRef = doc(db, "coaching", id);
+  await updateDoc(docRef, {
     ackText,
     ackDate: new Date()
   });
 }
 
 // -------------------------
-// ADMIN (UPDATED TO MODULAR)
+// ADMIN
 // -------------------------
-async function adminListAll() {
-  const usersSnap = await getDocs(collection(db, 'users'));
-  const membersSnap = await getDocs(collection(db, 'members'));
-  const critSnap = await getDocs(collection(db, 'criteria'));
+export async function adminListAll() {
+  const usersSnap = await getDocs(collection(db, "users"));
+  const membersSnap = await getDocs(collection(db, "members"));
+  const critSnap = await getDocs(collection(db, "criteria"));
 
   return {
-    users: usersSnap.docs.map(d => ({ id: d.id, ...d.data() })),
-    members: membersSnap.docs.map(d => ({ id: d.id, ...d.data() })),
-    criteria: critSnap.docs.map(d => ({ id: d.id, ...d.data() }))
+    users: usersSnap.docs.map((d) => ({ id: d.id, ...d.data() })),
+    members: membersSnap.docs.map((d) => ({ id: d.id, ...d.data() })),
+    criteria: critSnap.docs.map((d) => ({ id: d.id, ...d.data() }))
   };
 }
+
+// Optional: export auth/db if you need them
+export { auth, db };
